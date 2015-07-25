@@ -3,10 +3,9 @@
 #include <stdlib.h> 
 #include <string.h>
 
-// Teste Commit
-//DefiniÃ§Ã£o de constantes (CAIXA ALTA)
-#define CW P1OUT |= BIT0                    //Sentido horÃ¡rio
-#define CCW P1OUT &= ~BIT0                  //Sentido AntiHorÃ¡rio
+//Definição de constantes (CAIXA ALTA)
+#define CW P1OUT |= BIT0                    //Sentido horário
+#define CCW P1OUT &= ~BIT0                  //Sentido AntiHorário
 #define SLEEP_ON P1OUT &= ~BIT2             //Modo baixo consumo
 #define SLEEP_OFF P1OUT |= BIT2             //Modo baixo consumo off    
 #define RESET_ON P1OUT &= ~BIT3             //Reset ativado
@@ -17,10 +16,10 @@
 #define MS2 BIT5
 #define MS3 BIT4
 
-//ProtÃ³tipo de funÃ§Ãµes
+//Protótipo de funções
 void main(void);              //Programa principal
 void ini_config(void);        //Subrotina config. inicial
-void config_op(char valor);          //Configura a operaÃ§Ã£o do driver
+void config_op(char valor);          //Configura a operação do driver
 
 unsigned int conta = 0;
 
@@ -32,7 +31,7 @@ void main(void)
  //P1OUT &= ~MS2; 
  //P1OUT &= ~MS3;
  
- //ResoluÃ§Ã£o de 1/16 passos (cf. datasheet)
+ //Resolução de 1/16 passos (cf. datasheet)
  P1OUT |= MS1; 
  P1OUT |= MS2; 
  P1OUT |= MS3;
@@ -60,41 +59,41 @@ void ini_config(void)
 {
 WDTCTL = WDTPW + WDTHOLD;         //Desabilita WDT  
 
-// CalibraÃ§Ã£o do DCO para 1MHz
+// Calibração do DCO para 1MHz
   if (CALBC1_1MHZ == 0xFF || CALDCO_1MHZ == 0xFF)                                     
   {  
-    while(1);                 //Se constantes de calibraÃ§Ã£o apagadas
+    while(1);                 //Se constantes de calibração apagadas
                               //aguardar CPU!!
   } 
   // 1Mhz
   BCSCTL1 = CALBC1_1MHZ;         //Configura intervalo
-  DCOCTL = CALDCO_1MHZ;          //Configura DCO + modulaÃ§Ã£o  */
+  DCOCTL = CALDCO_1MHZ;          //Configura DCO + modulação  */
 
-//ConfiguraÃ§Ãµes das portas
-P1DIR = 0xFF;                      //Configura pinos de entrada(L) ou saÃ­da(H)
+//Configurações das portas
+P1DIR = 0xFF;                      //Configura pinos de entrada(L) ou saída(H)
 P2DIR = 0xFF;                 
 
 P1REN = 0x00;                      //PullUp/Down
 P2REN = 0x00;
 
-P1SEL2 = 0x00;                    //Configura funÃ§Ã£o das portas
+P1SEL2 = 0x00;                    //Configura função das portas
 P1SEL = 0x00;
 
 P2SEL2 = 0x00;
 P2SEL = 0x00;
 
-P1OUT = 0x00;                     //Limpa as saÃ­das
+P1OUT = 0x00;                     //Limpa as saídas
 
 P1IFG = 0x00;
 P2IFG = 0x00;
 
-//ConfiguraÃ§Ã£o - TimerA0
+//Configuração - TimerA0
 TA0CTL = 0x0210;
 TA0CCR0  = 300;               //Configura contador do timer (base de tempo 1us)
-TA0CCTL0 = CCIE;              //Habilita a interrupÃ§Ã£o do timer     
-__bis_SR_register(GIE);       //Habilita a interrupÃ§Ã£o geral
+TA0CCTL0 = CCIE;              //Habilita a interrupção do timer     
+__bis_SR_register(GIE);       //Habilita a interrupção geral
 
-//ConfiguraÃ§Ã£o do driver motor de passo
+//Configuração do driver motor de passo
 DISABLE;
  SLEEP_OFF;
   CCW;
